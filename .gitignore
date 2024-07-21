@@ -30,3 +30,6 @@
 *.exe
 *.out
 *.app
+
+# Add vscode settings
+.vscode/

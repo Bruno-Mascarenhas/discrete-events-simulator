@@ -1,0 +1,21 @@
+cmake_minimum_required(VERSION 3.10)
+
+# Project name
+project(discrete-events-simulator)
+
+# Set C++ standard
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED True)
+
+# Include directories
+include_directories(${PROJECT_SOURCE_DIR}/includes)
+
+# Source files
+set(SOURCES
+    src/main.cpp
+    src/tasks.cpp
+    src/schedulers.cpp
+)
+
+# Add executable
+add_executable(discrete-events-simulator ${SOURCES})
