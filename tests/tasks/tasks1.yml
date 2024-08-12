@@ -1,0 +1,16 @@
+tasks:
+  - id: 1
+    burst_time: 5
+    arrival_time: 0
+    deadline: 10
+    priority: 1
+  - id: 2
+    burst_time: 3
+    arrival_time: 2
+    deadline: 8
+    priority: 2
+  - id: 3
+    burst_time: 7
+    arrival_time: 4
+    deadline: 12
+    priority: 3

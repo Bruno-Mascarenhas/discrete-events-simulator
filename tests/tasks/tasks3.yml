@@ -1,0 +1,51 @@
+tasks:
+  - id: 1
+    burst_time: 5
+    arrival_time: 0
+    deadline: 10
+    priority: 1
+  - id: 2
+    burst_time: 3
+    arrival_time: 2
+    deadline: 8
+    priority: 2
+  - id: 3
+    burst_time: 7
+    arrival_time: 4
+    deadline: 12
+    priority: 3
+  - id: 4
+    burst_time: 4
+    arrival_time: 6
+    deadline: 15
+    priority: 4
+  - id: 5
+    burst_time: 6
+    arrival_time: 8
+    deadline: 18
+    priority: 5
+  - id: 6
+    burst_time: 2
+    arrival_time: 10
+    deadline: 14
+    priority: 6
+  - id: 7
+    burst_time: 8
+    arrival_time: 12
+    deadline: 20
+    priority: 7
+  - id: 8
+    burst_time: 4
+    arrival_time: 14
+    deadline: 18
+    priority: 8
+  - id: 9
+    burst_time: 3
+    arrival_time: 16
+    deadline: 22
+    priority: 9
+  - id: 10
+    burst_time: 6
+    arrival_time: 18
+    deadline: 24
+    priority: 10

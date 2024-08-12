@@ -31,5 +31,18 @@
 *.out
 *.app
 
-# Add vscode settings
+# Build directory
+/build/
+
+# CMake files
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+Makefile
+
+# Test-related files
+Testing/
+CTestTestfile.cmake
+
+# VSCode settings
 .vscode/
