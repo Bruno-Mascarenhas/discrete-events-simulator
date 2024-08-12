@@ -1,16 +1,7 @@
 #include "schedulers/EDF.hpp"
 
-void EDFScheduler::addTask(const Task& task) {
-  pendingTasks.push(task);
-}
-
-void EDFScheduler::addTasks(const std::vector<Task>& tasks) {
-  for (const Task& task : tasks) {
-    addTask(task);
-  }
-}
-
 void EDFScheduler::schedule() {
+  sortTasksByArrivalTime();
   int currentTime = 0;
 
   while (!pendingTasks.empty() || !taskQueue.empty()) {
@@ -61,8 +52,4 @@ void EDFScheduler::schedule() {
       }
     }
   }
-}
-
-const std::vector<Task>& EDFScheduler::getCompletedTasks() const {
-  return completedTasks;
 }

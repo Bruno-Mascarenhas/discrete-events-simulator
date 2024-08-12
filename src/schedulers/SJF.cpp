@@ -1,18 +1,7 @@
 #include "schedulers/SJF.hpp"
-#include <algorithm>
-#include <iostream>
-
-void SJFScheduler::addTask(const Task& task) {
-  pendingTasks.push(task);
-}
-
-void SJFScheduler::addTasks(const std::vector<Task>& tasks) {
-  for (const Task& task : tasks) {
-    pendingTasks.push(task);
-  }
-}
 
 void SJFScheduler::schedule() {
+  sortTasksByArrivalTime();
   int currentTime = 0;
 
   while (!pendingTasks.empty() || !taskQueue.empty()) {
@@ -46,8 +35,4 @@ void SJFScheduler::schedule() {
       }
     }
   }
-}
-
-const std::vector<Task>& SJFScheduler::getCompletedTasks() const {
-  return completedTasks;
 }

@@ -23,9 +23,10 @@ set(MAIN_SOURCES
     src/main.cpp
     src/Tasks.cpp
     src/schedulers/EDF.cpp
+    src/schedulers/SJF.cpp
     src/schedulers/FIFO.cpp
     src/schedulers/RoundRobin.cpp
-    src/schedulers/SJF.cpp
+    src/schedulers/BaseScheduler.cpp
 )
 
 # Add main executable
@@ -42,9 +43,10 @@ set(TEST_SOURCES
     tests/SchedulersTests.cpp
     src/Tasks.cpp
     src/schedulers/EDF.cpp
+    src/schedulers/SJF.cpp
     src/schedulers/FIFO.cpp
     src/schedulers/RoundRobin.cpp
-    src/schedulers/SJF.cpp
+    src/schedulers/BaseScheduler.cpp
 )
 
 # Add test executable

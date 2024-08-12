@@ -1,17 +1,7 @@
 #include "schedulers/FIFO.hpp"
-#include <iostream>
-
-void FIFOScheduler::addTask(const Task& task) {
-  taskQueue.push(task);
-}
-
-void FIFOScheduler::addTasks(const std::vector<Task>& tasks) {
-  for (const Task& task : tasks) {
-    taskQueue.push(task);
-  }
-}
 
 void FIFOScheduler::schedule() {
+  sortTasksByArrivalTime();
   int currentTime = 0;
 
   while (!taskQueue.empty()) {
@@ -37,8 +27,4 @@ void FIFOScheduler::schedule() {
     std::cout << "Task " << currentTask.getId() << " completed at time "
               << currentTime << "\n";
   }
-}
-
-const std::vector<Task>& FIFOScheduler::getCompletedTasks() const {
-  return completedTasks;
 }
