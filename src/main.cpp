@@ -1,79 +1,67 @@
-#include <yaml-cpp/yaml.h>
-#include <fstream>
-#include <iomanip>
 #include <iostream>
-#include <vector>
+#include <unordered_set>
+#include "schedulers/BaseScheduler.hpp"
 #include "schedulers/EDF.hpp"
 #include "schedulers/FIFO.hpp"
+#include "schedulers/HPF.hpp"
 #include "schedulers/RoundRobin.hpp"
 #include "schedulers/SJF.hpp"
+#include "utils/ioutils.hpp"
 
-std::vector<Task> loadTasksFromYAML(const std::string& filename) {
-  std::vector<Task> tasks;
-
-  try {
-    YAML::Node config = YAML::LoadFile(filename);
-    for (const YAML::Node& task_node : config["tasks"]) {
-      int id = task_node["id"].as<int>();
-      int burst_time = task_node["burst_time"].as<int>();
-      int arrival_time = task_node["arrival_time"].as<int>();
-      int deadline = task_node["deadline"].as<int>();
-      int priority = task_node["priority"].as<int>();  // Optional
-
-      tasks.emplace_back(id, burst_time, arrival_time, deadline, priority);
-    }
-  } catch (const YAML::BadFile& e) {
-    std::cerr << "Failed to open YAML file: " << filename << std::endl;
-    std::cerr << "Error: " << e.what() << std::endl;
-  }
-
-  return tasks;
+void runScheduler(BaseScheduler& scheduler, const std::vector<Task>& tasks) {
+  scheduler.addTasks(tasks);
+  scheduler.schedule();
+  printGanttChart(scheduler.getCompletedTasks());
 }
 
-void printGanttChart(const std::vector<Task>& tasks) {
-  std::cout << "Gantt Chart:\n";
-  std::cout << "Time: ";
-  for (const auto& task : tasks) {
-    std::cout << std::setw(5) << task.getCompletionTime();
-  }
-  std::cout << "\nTasks: ";
-  for (const auto& task : tasks) {
-    std::cout << std::setw(5) << task.getId();
-  }
-  std::cout << "\n";
-}
-
-int main() {
+int main(int argc, char* argv[]) {
   // Load tasks from YAML file
   std::vector<Task> tasks = loadTasksFromYAML("../examples/tasks.yml");
 
-  // EDF Scheduler
-  std::cout << "EDF Scheduler:\n";
-  EDFScheduler edfScheduler;
-  edfScheduler.addTasks(tasks);
-  edfScheduler.schedule();
-  printGanttChart(edfScheduler.getCompletedTasks());
+  if (argc < 2) {
+    std::cerr << "Please specify an algorithm: fifo, sjf, edf, robin, or all"
+              << std::endl;
+    return 1;
+  }
 
-  // FIFO Scheduler
-  std::cout << "\nFIFO Scheduler:\n";
-  FIFOScheduler fifoScheduler;
-  fifoScheduler.addTasks(tasks);
-  fifoScheduler.schedule();
-  printGanttChart(fifoScheduler.getCompletedTasks());
+  std::string algorithm = argv[1];
 
-  // SJF Scheduler
-  std::cout << "\nSJF Scheduler:\n";
-  SJFScheduler sjfScheduler;
-  sjfScheduler.addTasks(tasks);
-  sjfScheduler.schedule();
-  printGanttChart(sjfScheduler.getCompletedTasks());
+  if (algorithm == "fifo" || algorithm == "all") {
+    std::cout << "\nFIFO Scheduler:\n";
+    FIFOScheduler fifoScheduler;
+    runScheduler(fifoScheduler, tasks);
+  }
 
-  // Round Robin Scheduler
-  std::cout << "\nRound Robin Scheduler:\n";
-  RoundRobinScheduler roundRobinScheduler(2);  // Quantum = 2
-  roundRobinScheduler.addTasks(tasks);
-  roundRobinScheduler.schedule();
-  printGanttChart(roundRobinScheduler.getCompletedTasks());
+  if (algorithm == "sjf" || algorithm == "all") {
+    std::cout << "\nSJF Scheduler:\n";
+    SJFScheduler sjfScheduler;
+    runScheduler(sjfScheduler, tasks);
+  }
+
+  if (algorithm == "edf" || algorithm == "all") {
+    std::cout << "\nEDF Scheduler:\n";
+    EDFScheduler edfScheduler;
+    runScheduler(edfScheduler, tasks);
+  }
+
+  if (algorithm == "robin" || algorithm == "all") {
+    std::cout << "\nRound Robin Scheduler:\n";
+    RoundRobinScheduler roundRobinScheduler(2);  // Quantum = 2
+    runScheduler(roundRobinScheduler, tasks);
+  }
+
+  if (algorithm == "hpf" || algorithm == "all") {
+    std::cout << "\nHPF Scheduler:\n";
+    HPFScheduler hpfScheduler;
+    runScheduler(hpfScheduler, tasks);
+  }
+
+  std::unordered_set<std::string> validAlgorithms = {"fifo",  "sjf", "edf",
+                                                     "robin", "hpf", "all"};
+
+  if (validAlgorithms.find(algorithm) == validAlgorithms.end()) {
+    std::cout << "Invalid algorithm specified\n";
+  }
 
   return 0;
 }

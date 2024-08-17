@@ -24,8 +24,7 @@ class SJFScheduler : public BaseScheduler {
     }
   };
 
-  std::priority_queue<Task, std::vector<Task>, CompareBurstTime> taskQueue;
-  std::queue<Task> pendingTasks;
+  std::priority_queue<Task, std::vector<Task>, CompareBurstTime> pendingTasks;
 };
 
 #endif  // SJF_HPP

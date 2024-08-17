@@ -1,4 +1,4 @@
-#include "Tasks.hpp"
+#include "utils/Tasks.hpp"
 
 Task::Task(int id, int burst_time, int arrival_time, int deadline)
     : id(id),
@@ -62,6 +62,10 @@ int Task::getWaitingTime() const {
 
 int Task::getTurnaroundTime() const {
   return turnaround_time;
+}
+
+int Task::getPriority() const {
+  return priority;
 }
 
 // Setters

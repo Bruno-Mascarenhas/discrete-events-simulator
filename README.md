@@ -44,24 +44,18 @@ Follow these steps to build the project:
     cd <repository-name>
     ```
 
-2. **Create and navigate to the build directory:**
+2. **Create, navigate configure and build the project:**
 
     ```sh
     mkdir build
     cd build
+    cmake .. && make
     ```
 
-3. **Run CMake to configure and build the project:**
+3. **Run the executable:**
 
     ```sh
-    cmake ..
-    make
-    ```
-
-4. **Run the executable:**
-
-    ```sh
-    ./discrete-events-simulator
+    ./discrete-events-simulator {"fifo" | "sjf" | "edf" | "robin" | "hpf" | "all"}
     ```
 
 ## Running Tests
@@ -69,7 +63,7 @@ Follow these steps to build the project:
 To ensure the correctness of the scheduling algorithms, you can run the test suite inside the build folder:
 
 ```sh
-ctest
+ctest --verbose
 ```
 
 ## Code Formatting

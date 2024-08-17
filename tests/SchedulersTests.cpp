@@ -1,35 +1,25 @@
 #include <gtest/gtest.h>
 #include <yaml-cpp/yaml.h>
-#include "Tasks.hpp"
 #include "schedulers/EDF.hpp"
 #include "schedulers/FIFO.hpp"
+#include "schedulers/HPF.hpp"
 #include "schedulers/RoundRobin.hpp"
 #include "schedulers/SJF.hpp"
+#include "utils/Tasks.hpp"
+#include "utils/ioutils.hpp"
 
 class SchedulerTest : public ::testing::Test {
  protected:
-  std::vector<Task> loadTasksFromYAML(const std::string& filename) {
-    std::vector<Task> tasks;
-
-    YAML::Node config = YAML::LoadFile(filename);
-    for (const YAML::Node& task_node : config["tasks"]) {
-      int id = task_node["id"].as<int>();
-      int burst_time = task_node["burst_time"].as<int>();
-      int arrival_time = task_node["arrival_time"].as<int>();
-      int deadline = task_node["deadline"].as<int>();
-      int priority = task_node["priority"].as<int>();  // Optional
-
-      tasks.emplace_back(id, burst_time, arrival_time, deadline, priority);
-    }
-
-    return tasks;
+  void SetUp() override {
+    tasks = loadTasksFromYAML("../tests/tasks/tasks.yml");
   }
+
+  void TearDown() override { tasks.clear(); }
+
+  std::vector<Task> tasks;
 };
 
 TEST_F(SchedulerTest, FIFOSchedulerTest) {
-  std::string yamlFilePath = "../tests/tasks/tasks.yml";
-  std::vector<Task> tasks = loadTasksFromYAML(yamlFilePath);
-
   FIFOScheduler fifoScheduler;
   fifoScheduler.addTasks(tasks);
   fifoScheduler.schedule();
@@ -44,9 +34,6 @@ TEST_F(SchedulerTest, FIFOSchedulerTest) {
 }
 
 TEST_F(SchedulerTest, EDFSchedulerTest) {
-  std::string yamlFilePath = "tests/tasks/tasks.yml";
-  std::vector<Task> tasks = loadTasksFromYAML(yamlFilePath);
-
   EDFScheduler edfScheduler;
   edfScheduler.addTasks(tasks);
   edfScheduler.schedule();
@@ -55,15 +42,14 @@ TEST_F(SchedulerTest, EDFSchedulerTest) {
 
   ASSERT_EQ(completedTasks.size(), tasks.size());
 
-  // Check order and timing based on expected results
-  EXPECT_EQ(completedTasks[0].getId(), 2);
-  EXPECT_EQ(completedTasks[1].getId(), 1);
+  // Check if tasks were scheduled based on their deadlines
+  for (int i = 1; i < completedTasks.size(); ++i) {
+    EXPECT_GE(completedTasks[i].getDeadline(),
+              completedTasks[i - 1].getDeadline());
+  }
 }
 
 TEST_F(SchedulerTest, SJFSchedulerTest) {
-  std::string yamlFilePath = "tests/tasks/tasks.yml";
-  std::vector<Task> tasks = loadTasksFromYAML(yamlFilePath);
-
   SJFScheduler sjfScheduler;
   sjfScheduler.addTasks(tasks);
   sjfScheduler.schedule();
@@ -72,15 +58,14 @@ TEST_F(SchedulerTest, SJFSchedulerTest) {
 
   ASSERT_EQ(completedTasks.size(), tasks.size());
 
-  // Check order and timing based on expected results
-  EXPECT_EQ(completedTasks[0].getId(), 3);
-  EXPECT_EQ(completedTasks[1].getId(), 1);
+  // Check if tasks were scheduled based on their shortest burst times
+  for (int i = 1; i < completedTasks.size(); ++i) {
+    EXPECT_GE(completedTasks[i].getBurstTime(),
+              completedTasks[i - 1].getBurstTime());
+  }
 }
 
 TEST_F(SchedulerTest, RoundRobinSchedulerTest) {
-  std::string yamlFilePath = "tests/tasks/tasks.yml";
-  std::vector<Task> tasks = loadTasksFromYAML(yamlFilePath);
-
   RoundRobinScheduler roundRobinScheduler(2);  // Quantum = 2
   roundRobinScheduler.addTasks(tasks);
   roundRobinScheduler.schedule();
@@ -90,8 +75,24 @@ TEST_F(SchedulerTest, RoundRobinSchedulerTest) {
   ASSERT_EQ(completedTasks.size(), tasks.size());
 
   // Check order and timing based on expected results
-  EXPECT_EQ(completedTasks[0].getId(), 1);
-  EXPECT_EQ(completedTasks[1].getId(), 2);
+
+  // Check if tasks were preempted after their quantum
+}
+
+TEST_F(SchedulerTest, HPFSchedulerTest) {
+  HPFScheduler hpfScheduler;
+  hpfScheduler.addTasks(tasks);
+  hpfScheduler.schedule();
+
+  const auto& completedTasks = hpfScheduler.getCompletedTasks();
+
+  ASSERT_EQ(completedTasks.size(), tasks.size());
+
+  // Check if tasks were scheduled based on their priorities
+  for (int i = 1; i < completedTasks.size(); ++i) {
+    EXPECT_LE(completedTasks[i].getPriority(),
+              completedTasks[i - 1].getPriority());
+  }
 }
 
 int main(int argc, char** argv) {

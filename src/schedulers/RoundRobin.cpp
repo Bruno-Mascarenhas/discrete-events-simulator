@@ -32,9 +32,6 @@ void RoundRobinScheduler::schedule() {
       if (currentTask.getRemainingTime() == 0) {
         currentTask.setCompletionTime(currentTime);
         completedTasks.push_back(currentTask);
-
-        std::cout << "Task " << currentTask.getId() << " completed at time "
-                  << currentTime << "\n";
       } else {
         // If the task is not completed, push it back into the pendingTasks
         pendingTasks.push(currentTask);

@@ -15,14 +15,17 @@ class EDFScheduler : public BaseScheduler {
   void schedule() override;
 
  private:
+  /**
+   * @brief Comparator to compare tasks based on deadline, 
+   * with earlier deadlines first
+   */
   struct CompareDeadline {
     bool operator()(const Task& t1, const Task& t2) const {
       return t1.getDeadline() > t2.getDeadline();
     }
   };
 
-  std::priority_queue<Task, std::vector<Task>, CompareDeadline> taskQueue;
-  std::queue<Task> pendingTasks;
+  std::priority_queue<Task, std::vector<Task>, CompareDeadline> pendingTasks;
 };
 
 #endif  // EDF_HPP

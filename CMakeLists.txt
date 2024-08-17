@@ -21,10 +21,12 @@ include_directories(${PROJECT_SOURCE_DIR}/includes)
 # Source files for main executable
 set(MAIN_SOURCES
     src/main.cpp
-    src/Tasks.cpp
+    src/utils/Tasks.cpp
+    src/utils/ioutils.cpp
     src/schedulers/EDF.cpp
     src/schedulers/SJF.cpp
     src/schedulers/FIFO.cpp
+    src/schedulers/HPF.cpp
     src/schedulers/RoundRobin.cpp
     src/schedulers/BaseScheduler.cpp
 )
@@ -41,10 +43,12 @@ enable_testing()
 # Source files for test executable
 set(TEST_SOURCES
     tests/SchedulersTests.cpp
-    src/Tasks.cpp
+    src/utils/Tasks.cpp
+    src/utils/ioutils.cpp
     src/schedulers/EDF.cpp
     src/schedulers/SJF.cpp
     src/schedulers/FIFO.cpp
+    src/schedulers/HPF.cpp
     src/schedulers/RoundRobin.cpp
     src/schedulers/BaseScheduler.cpp
 )

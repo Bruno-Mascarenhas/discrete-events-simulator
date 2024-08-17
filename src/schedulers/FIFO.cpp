@@ -23,8 +23,5 @@ void FIFOScheduler::schedule() {
     currentTask.setCompletionTime(currentTime);
 
     completedTasks.push_back(currentTask);
-
-    std::cout << "Task " << currentTask.getId() << " completed at time "
-              << currentTime << "\n";
   }
 }

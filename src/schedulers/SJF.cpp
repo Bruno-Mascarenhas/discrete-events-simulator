@@ -6,15 +6,15 @@ void SJFScheduler::schedule() {
 
   while (!pendingTasks.empty() || !taskQueue.empty()) {
     // Add all tasks that have arrived by the current time to the priority queue
-    while (!pendingTasks.empty() &&
-           pendingTasks.front().getArrivalTime() <= currentTime) {
-      taskQueue.push(pendingTasks.front());
-      pendingTasks.pop();
+    while (!taskQueue.empty() &&
+           taskQueue.front().getArrivalTime() <= currentTime) {
+      pendingTasks.push(taskQueue.front());
+      taskQueue.pop();
     }
 
-    if (!taskQueue.empty()) {
-      Task currentTask = taskQueue.top();
-      taskQueue.pop();
+    if (!pendingTasks.empty()) {
+      Task currentTask = pendingTasks.top();
+      pendingTasks.pop();
 
       if (currentTask.getStartTime() == -1) {
         currentTask.setStartTime(currentTime);
@@ -25,13 +25,10 @@ void SJFScheduler::schedule() {
       currentTask.setCompletionTime(currentTime);
 
       completedTasks.push_back(currentTask);
-
-      std::cout << "Task " << currentTask.getId() << " completed at time "
-                << currentTime << "\n";
     } else {
       // If no tasks are ready, advance time to the next task's arrival
-      if (!pendingTasks.empty()) {
-        currentTime = pendingTasks.front().getArrivalTime();
+      if (!taskQueue.empty()) {
+        currentTime = taskQueue.front().getArrivalTime();
       }
     }
   }
