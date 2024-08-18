@@ -36,14 +36,8 @@ void HPFScheduler::schedule() {
         currentTask.setStartTime(currentTime);
       }
 
-      int timeUntilNextEvent = (pendingTasks.empty())
-                                   ? std::numeric_limits<int>::max()
-                                   : pendingTasks.top().getArrivalTime();
-      int executionTime = std::min(currentTask.getRemainingTime(),
-                                   timeUntilNextEvent - currentTime);
+      int executionTime = currentTask.getBurstTime();
 
-      // Advance time and update task state
-      currentTime += executionTime;
       currentTask.setRemainingTime(currentTask.getRemainingTime() -
                                    executionTime);
 
@@ -55,6 +49,11 @@ void HPFScheduler::schedule() {
         pendingTasks.push(currentTask);
       }
 
+      intervals.push_back(
+          {currentTime, currentTime + executionTime, currentTask.getId()});
+      // Update the current time
+      currentTime += executionTime;
+
       if (currentTime == lastCurrentTime) {
         // If no progress was made, move the task to the completed list
         Task currentTask = pendingTasks.top();
@@ -62,6 +61,13 @@ void HPFScheduler::schedule() {
         currentTask.setCompletionTime(currentTime);
         completedTasks.push_back(currentTask);
         pendingTasks.pop();
+      }
+
+      //check if there new tasks arrived
+      while (!taskQueue.empty() &&
+             taskQueue.front().getArrivalTime() <= currentTime) {
+        pendingTasks.push(taskQueue.front());
+        taskQueue.pop();
       }
 
       lastCurrentTime = currentTime;

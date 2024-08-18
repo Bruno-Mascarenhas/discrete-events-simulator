@@ -20,6 +20,10 @@ void SJFScheduler::schedule() {
         currentTask.setStartTime(currentTime);
       }
 
+      intervals.push_back({currentTime,
+                           currentTime + currentTask.getBurstTime(),
+                           currentTask.getId()});
+
       currentTime += currentTask.getBurstTime();
       currentTask.setRemainingTime(0);
       currentTask.setCompletionTime(currentTime);

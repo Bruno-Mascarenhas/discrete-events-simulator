@@ -1,6 +1,5 @@
 #include <gtest/gtest.h>
 #include <yaml-cpp/yaml.h>
-#include "schedulers/EDF.hpp"
 #include "schedulers/FIFO.hpp"
 #include "schedulers/HPF.hpp"
 #include "schedulers/RoundRobin.hpp"
@@ -31,22 +30,6 @@ TEST_F(SchedulerTest, FIFOSchedulerTest) {
   // Check order and timing based on expected results
   EXPECT_EQ(completedTasks[0].getId(), 1);
   EXPECT_EQ(completedTasks[1].getId(), 2);
-}
-
-TEST_F(SchedulerTest, EDFSchedulerTest) {
-  EDFScheduler edfScheduler;
-  edfScheduler.addTasks(tasks);
-  edfScheduler.schedule();
-
-  const auto& completedTasks = edfScheduler.getCompletedTasks();
-
-  ASSERT_EQ(completedTasks.size(), tasks.size());
-
-  // Check if tasks were scheduled based on their deadlines
-  for (int i = 1; i < completedTasks.size(); ++i) {
-    EXPECT_GE(completedTasks[i].getDeadline(),
-              completedTasks[i - 1].getDeadline());
-  }
 }
 
 TEST_F(SchedulerTest, SJFSchedulerTest) {

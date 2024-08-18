@@ -26,6 +26,9 @@ void RoundRobinScheduler::schedule() {
       // Execute the task for the time slice or remaining time, whichever is smaller
       int timeSlice = std::min(quantum, currentTask.getRemainingTime());
       currentTask.setRemainingTime(currentTask.getRemainingTime() - timeSlice);
+
+      intervals.push_back(
+          {currentTime, currentTime + timeSlice, currentTask.getId()});
       currentTime += timeSlice;
 
       // If the task is completed

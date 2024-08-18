@@ -17,13 +17,13 @@ find_package(GTest REQUIRED)
 include_directories(${GTEST_INCLUDE_DIRS})
 include_directories(${YAML_CPP_INCLUDE_DIRS})
 include_directories(${PROJECT_SOURCE_DIR}/includes)
+include_directories(${PROJECT_SOURCE_DIR}/src)
 
 # Source files for main executable
 set(MAIN_SOURCES
     src/main.cpp
     src/utils/Tasks.cpp
     src/utils/ioutils.cpp
-    src/schedulers/EDF.cpp
     src/schedulers/SJF.cpp
     src/schedulers/FIFO.cpp
     src/schedulers/HPF.cpp
@@ -34,7 +34,7 @@ set(MAIN_SOURCES
 # Add main executable
 add_executable(discrete-events-simulator ${MAIN_SOURCES})
 
-# Link yaml-cpp library to main executable
+# Link libraries to main executable
 target_link_libraries(discrete-events-simulator yaml-cpp)
 
 # Enable testing
@@ -45,7 +45,6 @@ set(TEST_SOURCES
     tests/SchedulersTests.cpp
     src/utils/Tasks.cpp
     src/utils/ioutils.cpp
-    src/schedulers/EDF.cpp
     src/schedulers/SJF.cpp
     src/schedulers/FIFO.cpp
     src/schedulers/HPF.cpp

@@ -19,6 +19,15 @@ class BaseScheduler {
   virtual ~BaseScheduler() = default;
 
   /**
+   * @brief Struct to represent a task interval.
+   */
+  struct Interval {
+    int start;
+    int end;
+    int taskId;
+  } typedef Interval;
+
+  /**
    * @brief Adds a task to the scheduler.
    * @param task The task to be added to the scheduling queue.
    */
@@ -49,9 +58,23 @@ class BaseScheduler {
    */
   double getAverageTurnaroundTime();
 
+  /**
+   * @brief Calculates the average waiting time of the completed tasks.
+   * @return The average waiting time.
+   */
+  double getAverageWaitingTime();
+
+  /**
+   * @brief gets the intervals of the tasks to be used in the Gantt chart.
+   * @return A vector of pairs representing the intervals of the tasks.
+   */
+  std::vector<Interval> getIntervals();
+
  protected:
   std::vector<Task> completedTasks;
   std::queue<Task> taskQueue;
+  // vector of Intervals to be used in the Gantt chart
+  std::vector<Interval> intervals;
 
   /**
    * @brief Sort the taskQueue based on the arrival time of the tasks.

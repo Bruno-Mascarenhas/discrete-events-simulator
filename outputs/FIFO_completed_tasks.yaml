@@ -1,0 +1,75 @@
+algorithmName: FIFO
+completed_tasks:
+  - id: 1
+    burst_time: 5
+    arrival_time: 0
+    deadline: 10
+    priority: 1
+    start_time: 0
+    completion_time: 5
+    waiting_time: 0
+    turnaround_time: 5
+  - id: 2
+    burst_time: 3
+    arrival_time: 0
+    deadline: 8
+    priority: 2
+    start_time: 5
+    completion_time: 8
+    waiting_time: 5
+    turnaround_time: 8
+  - id: 3
+    burst_time: 7
+    arrival_time: 0
+    deadline: 12
+    priority: 3
+    start_time: 8
+    completion_time: 15
+    waiting_time: 8
+    turnaround_time: 15
+  - id: 4
+    burst_time: 4
+    arrival_time: 0
+    deadline: 15
+    priority: 4
+    start_time: 15
+    completion_time: 19
+    waiting_time: 15
+    turnaround_time: 19
+  - id: 5
+    burst_time: 6
+    arrival_time: 0
+    deadline: 18
+    priority: 5
+    start_time: 19
+    completion_time: 25
+    waiting_time: 19
+    turnaround_time: 25
+  - id: 6
+    burst_time: 2
+    arrival_time: 0
+    deadline: 14
+    priority: 6
+    start_time: 25
+    completion_time: 27
+    waiting_time: 25
+    turnaround_time: 27
+intervals:
+  - start_time: 0
+    end_time: 5
+    task_id: 1
+  - start_time: 5
+    end_time: 8
+    task_id: 2
+  - start_time: 8
+    end_time: 15
+    task_id: 3
+  - start_time: 15
+    end_time: 19
+    task_id: 4
+  - start_time: 19
+    end_time: 25
+    task_id: 5
+  - start_time: 25
+    end_time: 27
+    task_id: 6

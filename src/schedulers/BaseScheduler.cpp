@@ -25,6 +25,21 @@ double BaseScheduler::getAverageTurnaroundTime() {
   return totalTurnaroundTime / completedTasks.size();
 }
 
+double BaseScheduler::getAverageWaitingTime() {
+  if (completedTasks.size() == 0)
+    return -1;
+
+  double totalWaitingTime = 0.0;
+  for (const Task& task : completedTasks) {
+    totalWaitingTime += task.getWaitingTime();
+  }
+  return totalWaitingTime / completedTasks.size();
+}
+
+std::vector<BaseScheduler::Interval> BaseScheduler::getIntervals() {
+  return intervals;
+}
+
 void BaseScheduler::sortTasksByArrivalTime() {
   std::vector<Task> tasks;
   while (!taskQueue.empty()) {

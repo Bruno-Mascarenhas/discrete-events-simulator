@@ -46,3 +46,10 @@ CTestTestfile.cmake
 
 # VSCode settings
 .vscode/
+
+# Python cache
+__pycache__/
+.cache/
+
+# output files
+outputs/

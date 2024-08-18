@@ -30,14 +30,14 @@ class Task {
   int getRemainingTime() const;
   int getDeadline() const;
   int getPriority() const;
-  void setRemainingTime(int time);
   int getArrivalTime() const;
   int getStartTime() const;
-  void setStartTime(int time);
   int getCompletionTime() const;
-  void setCompletionTime(int time);
   int getWaitingTime() const;
   int getTurnaroundTime() const;
+  void setStartTime(int time);
+  void setRemainingTime(int time);
+  void setCompletionTime(int time);
 
  private:
   int id;               ///< Unique identifier for the task

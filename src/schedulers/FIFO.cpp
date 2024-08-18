@@ -23,5 +23,7 @@ void FIFOScheduler::schedule() {
     currentTask.setCompletionTime(currentTime);
 
     completedTasks.push_back(currentTask);
+    intervals.push_back({currentTask.getStartTime(),
+                         currentTask.getCompletionTime(), currentTask.getId()});
   }
 }

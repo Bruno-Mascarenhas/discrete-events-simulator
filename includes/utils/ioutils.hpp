@@ -2,9 +2,11 @@
 #define IO_UTILS_HPP
 
 #include <yaml-cpp/yaml.h>
+#include <filesystem>
 #include <fstream>
 #include <iomanip>
 #include <vector>
+#include "schedulers/BaseScheduler.hpp"
 #include "utils/Tasks.hpp"
 
 /**
@@ -18,6 +20,20 @@
  * @throw YAML::BadFile if the YAML file cannot be opened.
  */
 std::vector<Task> loadTasksFromYAML(const std::string& filename);
+
+/**
+ * @brief Exports completed tasks to a YAML file.
+ * This function writes the completed tasks to a YAML file with details 
+ * like id, burst_time, arrival_time, deadline, priority, start_time, 
+ * completion_time, waiting_time, and turnaround_time. The output file 
+ * is saved in the "outputs" folder with the algorithm name as a prefix.
+ * @param completedTasks A vector of Task objects representing completed tasks.
+ * @param algorithmName The name of the scheduling algorithm used.
+ */
+void exportCompletedTasksToYAML(
+    const std::vector<Task>& completedTasks,
+    const std::vector<BaseScheduler::Interval>& intervals,
+    const std::string& algorithmName, const std::string& outputFolderPath);
 
 /**
  * @brief Prints a Gantt chart based on the provided tasks.
