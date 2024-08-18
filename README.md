@@ -94,4 +94,7 @@ Explore the example task configurations in the `examples` directory. These YAML 
 
 The `run_pipeline.sh` script runs the C++ executable to generate YAML files and then uses a Python script to create Gantt charts for each YAML file. Ensure the `outputs` directory is present and set up as needed.
 
+![FIFO Gantt Chart](outputs/FIFO_completed_tasks.png)
+![SJF Gantt Chart](outputs/SJF_completed_tasks.png)
+
 --- 
